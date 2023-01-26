@@ -8,7 +8,6 @@ module.exports = (sequelize, Sequelize) => {
       },
       html: {
         type: Sequelize.TEXT('long'),
-        
       },
       tech: {
         type: Sequelize.STRING
@@ -16,10 +15,26 @@ module.exports = (sequelize, Sequelize) => {
       shortcode: {
         type: Sequelize.STRING
       },
-      
+      // topic , chapter , tech , stack 
+      type: {
+        type: Sequelize.STRING
+      },
+      parent: {
+        type: Sequelize.STRING
+      },
+      stags: {
+        type: Sequelize.STRING
+      },
+      shortcode: {
+        type: Sequelize.STRING
+      },
+      docUrl: {
+        type: Sequelize.STRING
+      },
       published: {
         type: Sequelize.BOOLEAN
       }
+      
     });
   
     return Tutorial;
