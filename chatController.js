@@ -13,6 +13,8 @@ const openai = new OpenAIApi(configuration);
 
 exports.dev2 = async (req, res) => {
 
+  process.env.APIVAL = Number(process.env.APIVAL) + 1;
+  console.log(process.env.APIVAL);
   console.log(req.query)
   console.log(Date.now())
 

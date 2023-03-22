@@ -22,6 +22,7 @@ db.sequelize.sync();
 
 // simple route
 app.get("/", async (req, res) => {
+
   res.json({ message: "Welcome to bezkoder application." });
 });
 
@@ -34,6 +35,7 @@ const PORT = process.env.PORT || 8080;
 
 
 app.listen(PORT, () => {
+  console.log(process.env.APIVAL = 1);
   console.log(`Server is running on port ${PORT}.`);
 
 });
