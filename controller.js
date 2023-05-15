@@ -55,9 +55,9 @@ exports.findAll = (req, res) => {
   console.log(tech)
   // var condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
   // var condition1 = tech ? {tech: {[Op.like]: `%${tech}%`}} : null;
-console.log("hhhhhhhh")
-console.log(condition)
-console.log(condition1)
+// console.log("hhhhhhhh")
+// console.log(condition)
+// console.log(condition1)
   // Tutorial.findAll({ where: {condition, condition1} })
   Tutorial.findAll({ where: {
     title: { [Op.like]: `%${title}%`},
