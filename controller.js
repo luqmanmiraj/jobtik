@@ -16,13 +16,15 @@ exports.create = (req, res) => {
     });
     return;
   }
-
+console.log("req.body")
+console.log(req.body)
   // Create a Tutorial
   const tutorial = {
     title: req.body.title,
     description: req.body.description,
     html: req.body.html,
-    published: req.body.published ? req.body.published : false
+    published: req.body.published ? req.body.published : false,
+    
   };
 
   // Save Tutorial in the database
@@ -40,10 +42,29 @@ exports.create = (req, res) => {
 
 // Retrieve all Tutorials from the database.
 exports.findAll = (req, res) => {
+  // const abc = req.query.title;
+  // console.log("shhhhhhhh")
+  // console.log(req.query)
+  // console.log(abc.split(" "))
+  // var arr= req.query.title.split(" ");
+  // const title = arr[0];
+  // const tech = arr[1];
   const title = req.query.title;
-  var condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
-
-  Tutorial.findAll({ where: condition })
+  const tech = req.query.tech;
+  console.log("tech");
+  console.log(tech)
+  // var condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
+  // var condition1 = tech ? {tech: {[Op.like]: `%${tech}%`}} : null;
+console.log("hhhhhhhh")
+console.log(condition)
+console.log(condition1)
+  // Tutorial.findAll({ where: {condition, condition1} })
+  Tutorial.findAll({ where: {
+    title: { [Op.like]: `%${title}%`},
+    tech: {[Op.like]: `%${tech}%`}
+  }
+   })
+  // console.log("inside the singnle tutorial with id")     
     .then(data => {
       res.send(data);
     })
@@ -57,12 +78,14 @@ exports.findAll = (req, res) => {
 
 // Find a single Tutorial with an id
 exports.findOne = (req, res) => {
+  
   const id = req.params.id;
 
   Tutorial.findByPk(id)
     .then(data => {
       if (data) {
-        res.send(data);
+        res.send(data);   
+        
       } else {
         res.status(404).send({
           message: `Cannot find Tutorial with id=${id}.`
