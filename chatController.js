@@ -5,7 +5,7 @@ const { Configuration, OpenAIApi } = require("openai")
 const request = require('request')
 const configuration = new Configuration({
   organization: dbConfig.org,
-  // apiKey: process.env.OPENAI_API_KEY,
+  apiKey: process.env.OPENAI_API_KEY,
   apiKey: dbConfig.chatkey
 
 });
@@ -26,12 +26,14 @@ exports.dev2 = async (req, res) => {
       prompt: req.query.query,
 
       temperature: 0.5,
-      max_tokens: 500,
       top_p: 1,
+      max_tokens: 500,
       frequency_penalty: 0,
       presence_penalty: 0,
     });
+    console.log("completion.data.choices")
     console.log(completion.data.choices)
+    console.log("completion.data.choices")
 
     res.send(completion.data.choices[0].text);
 
