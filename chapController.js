@@ -1,8 +1,8 @@
 const db = require("./model");
-const Tutorial = db.tutorials;
+const Tutorial = db.chap;
 const Op = db.Sequelize.Op;
 
-// Create and Save a new Tutorial
+// Create and Save a new chap
 exports.create = (req, res) => {
 
 
@@ -10,7 +10,7 @@ exports.create = (req, res) => {
 
 
   // Validate request
-  if (!req.body.title) {
+  if (!req.body.name) {
     res.status(400).send({
       message: "Content can not be empty!"
     });
@@ -20,12 +20,9 @@ console.log("req.body")
 console.log(req.body)
   // Create a Tutorial
   const tutorial = {
-    title: req.body.title,
-    description: req.body.description,
-    html: req.body.html,
-    published: req.body.published ? req.body.published : false,
-    parent:req.body.parent?req.body.parent:'',
-    tech:req.body.tech?req.body.tech:''
+    name: req.body.name,
+    parent_tech:req.body.parent_tech,
+    shortcode:req.body.shortcode
     
   };
 
@@ -42,58 +39,16 @@ console.log(req.body)
     });
 };
 
-// Retrieve all Tutorials from the database.
+// Retrieve all chap whose parent tech is given
 exports.findAll = (req, res) => {
-  // const abc = req.query.title;
-  // console.log("shhhhhhhh")
-  // console.log(req.query)
-  // console.log(abc.split(" "))
-  // var arr= req.query.title.split(" ");
-  // const title = arr[0];
-  // const tech = arr[1];
-  const title = req.query.title;
-  const tech = req.query.tech;
+
+  const tech = req.query.parent_tech;
   console.log("tech");
   console.log(tech)
-  // var condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
-  // var condition1 = tech ? {tech: {[Op.like]: `%${tech}%`}} : null;
-// console.log("hhhhhhhh")
-// console.log(condition)
-// console.log(condition1)
-  // Tutorial.findAll({ where: {condition, condition1} })
+
   Tutorial.findAll({ where: {
-    title: { [Op.like]: `%${title}%`}
-    // tech: {[Op.like]: `%${tech}%`}
+    parent_tech: tech
   }
-   })
-  // console.log("inside the singnle tutorial with id")     
-    .then(data => {
-      res.send(data);
-    })
-    .catch(err => {
-      res.status(500).send({
-        message:
-          err.message || "Some error occurred while retrieving tutorials."
-      });
-    });
-};
-
-
-
-// Retrieve all tut whose text chap and tech is given 
-exports.searchTutbyCh = (req, res) => {
-
-  const text = req.query.text;
-  console.log("query search :: "+ text);
-
-  Tutorial.findAll({ attributes: ['id', 'title','shortcode','parent','tech'],where: {
-  
-    parent: text
-
-  
-
-  }
-  
    })
     .then(data => {
       res.send(data);
@@ -105,13 +60,31 @@ exports.searchTutbyCh = (req, res) => {
       });
     });
 };
+// Retrieve all chap whose text name matches
+exports.searchChap = (req, res) => {
 
-
-// Find a single Tutorial with an id
-exports.findOne = (req, res) => {
+    const text = req.query.text;
+    console.log("query search :: "+ text);
   
-  const id = req.params.id;
+    Tutorial.findAll({ where: {
+    name: { [Op.like]: `%${text}%`}
 
+    }
+    
+     })
+      .then(data => {
+        res.send(data);
+      })
+      .catch(err => {
+        res.status(500).send({
+          message:
+            err.message || "Some error occurred while retrieving chap."
+        });
+      });
+  };
+// Find a single chap with an id
+exports.findOne = (req, res) => {
+  const id = req.params.id;
   Tutorial.findByPk(id)
     .then(data => {
       if (data) {
@@ -119,18 +92,18 @@ exports.findOne = (req, res) => {
         
       } else {
         res.status(404).send({
-          message: `Cannot find Tutorial with id=${id}.`
+          message: `Cannot find chap with id=${id}.`
         });
       }
     })
     .catch(err => {
       res.status(500).send({
-        message: "Error retrieving Tutorial with id=" + id
+        message: "Error retrieving chap with id=" + id
       });
     });
 };
 
-// Update a Tutorial by the id in the request
+// Update a chap by the id in the request
 exports.update = (req, res) => {
   const id = req.params.id;
 
@@ -140,11 +113,11 @@ exports.update = (req, res) => {
     .then(num => {
       if (num == 1) {
         res.send({
-          message: "Tutorial was updated successfully."
+          message: "chap was updated successfully."
         });
       } else {
         res.send({
-          message: `Cannot update Tutorial with id=${id}. Maybe Tutorial was not found or req.body is empty!`
+          message: `Cannot update chap with id=${id}. Maybe chap was not found or req.body is empty!`
         });
       }
     })
@@ -155,7 +128,7 @@ exports.update = (req, res) => {
     });
 };
 
-// Delete a Tutorial with the specified id in the request
+// Delete a chap with the specified id in the request
 exports.delete = (req, res) => {
   const id = req.params.id;
 
@@ -165,17 +138,17 @@ exports.delete = (req, res) => {
     .then(num => {
       if (num == 1) {
         res.send({
-          message: "Tutorial was deleted successfully!"
+          message: "chap was deleted successfully!"
         });
       } else {
         res.send({
-          message: `Cannot delete Tutorial with id=${id}. Maybe Tutorial was not found!`
+          message: `Cannot delete chap with id=${id}. Maybe chap was not found!`
         });
       }
     })
     .catch(err => {
       res.status(500).send({
-        message: "Could not delete Tutorial with id=" + id
+        message: "Could not delete chap with id=" + id
       });
     });
 };
@@ -187,12 +160,12 @@ exports.deleteAll = (req, res) => {
     truncate: false
   })
     .then(nums => {
-      res.send({ message: `${nums} Tutorials were deleted successfully!` });
+      res.send({ message: `${nums} chaps were deleted successfully!` });
     })
     .catch(err => {
       res.status(500).send({
         message:
-          err.message || "Some error occurred while removing all tutorials."
+          err.message || "Some error occurred while removing all chaps."
       });
     });
 };

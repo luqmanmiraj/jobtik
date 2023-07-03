@@ -8,6 +8,9 @@ module.exports = app => {
   
     // Retrieve all Tutorials
     router.get("/", tutorials.findAll);
+//retrieve by tut by chap name
+    router.get("/bychap", tutorials.searchTutbyCh);
+
   
     // Retrieve all published Tutorials
     router.get("/published", tutorials.findAllPublished);

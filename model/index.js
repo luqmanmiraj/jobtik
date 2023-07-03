@@ -20,5 +20,9 @@ db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
 db.tutorials = require("./tutorial.js")(sequelize, Sequelize);
+db.chap = require("./chap.js")(sequelize, Sequelize);
+db.tech = require("./tech.js")(sequelize, Sequelize);
+
+
 
 module.exports = db;

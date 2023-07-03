@@ -28,6 +28,10 @@ app.get("/", async (req, res) => {
 
 require("./routes/routes")(app);
 require("./routes/chat")(app);
+require("./routes/chap")(app);
+require("./routes/tech")(app);
+
+
 
 
 // set port, listen for requests
